@@ -30,11 +30,28 @@ eva.ru has 2 modes to read forums: a mobile version when all topics posts are do
      - Skoltech/russian-inappropriate-messages
   - The data were combined together and briefly analyzed in 3. Sentiments Analysis.ipynb Sentiments based on "Tatyana/rubert_conversational_cased_sentiment" are 100% match sentiments from "blanchefort/rubert-base-cased-sentiment" for whatever reason (was doublechecked few times.). Only "Tatyana" sentiments are used in further analysis. Inappropriate messages detection is not useful in the analysis. Forums moderators did a great job. The only few detected inapropriate messages are related to, in fact, negative comments about slapping kids. I wish there were sarcasm detection for russian language instead!
 
-2. Text Extended Attributes
+2. Text Extended Attributes are features like part of speach, number of commas, exlamations marks, sentences, etc
+ - 0. TextExtendedAttributes_FeatureEngineering.ipynb is used to prepare the features with a help of treetagger for POS. It's slow and ineffective. pymorphy2 library was used in the later research.
+ - 1. Posts Text Attributes EDA.ipynb abalyzes the forums posts
 
-3. Time Trends
+3. Time Trends is analysis of posts publication dates. 
+ - 0. TimeTrends FeatureEngineering.ipynb is just pre-calculates time related features
+ - 1. TimeTrends Analysis.ipynb is EDA:
+  - The best days of the forum were before 2012 when more posts were published monthly comparing to nowdays. Users posted their messages using their names mostly, not anonymously. The next spike is 2020 Mar-May COVID-19 lockdown. Seasonality is clear seen in the data when less posts are published in summer time.
+  - Less posts on weekends, even on Friday.
+  - Most posts are published day time from offices or when kids are in school. Early morning and night messages are from users in US and Canada or somebody who do not sleep.
 
-4. Authors
+4. Authors (forum users)
+ - 0. Authors.ipynb - the listof frum users is created based on the downloaded posts. The code extracts author IDs, last used nick names (can be changed overtime or in different posts), numbers of posts published, the date of the first and last posts, number of discussions started, number or replies to their posts, and many other attributes aggregated in different ways from text extended attributes, sentiment analysis, time trends. A quick EDA is done in teh process attributes extractions
+ - 1. Authors Segmentation by Style.ipynb is EDA and authors clusterization. The result of the code are attributes most important to distinguish users (total number ofusers  posts was not taken into account):
+  - Number of posts with commas (fraction_of_medium_with_commas)
+  - Average number of sentences (avg_num_sent)
+  - Number of large topics were created by user (topics with number of posts more then average in a forum chapter) (fraction_of_Large_Topics)
+  - Average by all posts fraction of recognized adjective and nouns to verbs
+  - Average number of commas (avg_num_commas)
+  - How many posts with discussions (start a branch in a topic to discuss something) (fraction_of_messages_with_discussion)
+  - Average by all posts TTR_A - fraction of unique recognized adjectives in a message to all recognized adjective: TTR_A = num_unique_Adj/num_Adj
+Basically, the complexity of text (size, commas, adjectives), interest for the public and emotional tempreture of the posts are important. (The more emotional post, the more replies and discussions it has.)
 
 5. Posts similarity and clones detection
   - 5. Philologist
