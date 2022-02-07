@@ -60,15 +60,15 @@ Basically, the complexity of text (size, commas, adjectives), interest for the p
   - 6. lizon. This lady created numerous clones but she is easy identified by the style and subjects. She likes to add photes and links to photos in her posts. No a surprise, the model trained on the original, not cleaned from html tags, posts is much better then models built on just pure text. "blinoff/roberta-base-russian-v0" pre-trained model has the best score. In general, the process is strightforward but 2 steps need more attention:
     - How to build traing/test dataset for s specific user? Using all available downloaded data (9M of posts) makes the data so unbalanced and large, it is not possible to use in practise. But, in fact, there are even more available data not downloaded. I choose one first, user, and posts from all topics where she participated, for training and test. The dataset is still unbalanced but more reasonable and processable in Google Colab GPU instance. All users and discussions after the last known post of teh pre-selected user are data for prediction, e.g. dataset to find clones in.
     -  There is still non 0, but low number of users similar by style and subjects to the selected author. They are appeared in the predicted results. the question is how to limit the number of found clones to the real one. It was easy for lizon, but not for Fedulya user.
-    -  0. lizon_Data_Preparation.ipynb creates train/test dataset
-    -  1. lizon_finetuning_experiments.ipynb researches different models and ways to train using ktrain library
-    -  3. lizon_transformers_final.ipynb creates a final model or rather a set of several models trained on different folds.
-    -  4. lizon_prediction.ipynb predicts clones based on the rest of the downloaded data.
+    -  0.lizon_Data_Preparation.ipynb creates train/test dataset
+    -  1.lizon_finetuning_experiments.ipynb researches different models and ways to train using ktrain library
+    -  3.lizon_transformers_final.ipynb creates a final model or rather a set of several models trained on different folds.
+    -  4.lizon_prediction.ipynb predicts clones based on the rest of the downloaded data.
     
  Even more interesting research, if a new model can distinguish between clones the first model found?
-   - 5. lizon_dissimilarity_model.ipynb
-   - 6. lizon_dissimilarity_2LargestAccounts_model.ipynb
-   - 7. lizon_dissimilarity_3MediumAccounts_model.ipynb
+     - 5.lizon_dissimilarity_model.ipynb
+     - 6.lizon_dissimilarity_2LargestAccounts_model.ipynb
+     - 7.lizon_dissimilarity_3MediumAccounts_model.ipynb
    The more messages from a particular clone the better difference detected. 500 - 1000 posts to detect a difference.
   
   - 7. Fedulya Surprisingly but the original, not cleaned from html tags posts are more informative for a classification model even without a lot of links and photos as in a case of lizon. The difference between models is not so large but still significant. This user has even more clones. Without similar user names it was difficult to say if it's teh same person or different because the number of similar posts are low.
