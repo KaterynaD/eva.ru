@@ -31,19 +31,19 @@ eva.ru has 2 modes to read forums: a mobile version when all topics posts are do
   - The data were combined together and briefly analyzed in 3. Sentiments Analysis.ipynb Sentiments based on "Tatyana/rubert_conversational_cased_sentiment" are 100% match sentiments from "blanchefort/rubert-base-cased-sentiment" for whatever reason (was doublechecked few times.). Only "Tatyana" sentiments are used in further analysis. Inappropriate messages detection is not useful in the analysis. Forums moderators did a great job. The only few detected inapropriate messages are related to, in fact, negative comments about slapping kids. I wish there were sarcasm detection for russian language instead!
 
 2. Text Extended Attributes are features like part of speach, number of commas, exlamations marks, sentences, etc
- - 0. TextExtendedAttributes_FeatureEngineering.ipynb is used to prepare the features with a help of treetagger for POS. It's slow and ineffective. pymorphy2 library was used in the later research.
- - 1. Posts Text Attributes EDA.ipynb abalyzes the forums posts. It's used in the further analysis of forum users only. 
+ - 0.TextExtendedAttributes_FeatureEngineering.ipynb is used to prepare the features with a help of treetagger for POS. It's slow and ineffective. pymorphy2 library was used in the later research.
+ - 1.Posts Text Attributes EDA.ipynb abalyzes the forums posts. It's used in the further analysis of forum users only. 
 
 3. Time Trends is analysis of posts publication dates. 
- - 0. TimeTrends FeatureEngineering.ipynb is just pre-calculates time related features
- - 1. TimeTrends Analysis.ipynb is EDA:
+ - 0.TimeTrends FeatureEngineering.ipynb is just pre-calculates time related features
+ - 1.TimeTrends Analysis.ipynb is EDA:
     - The best days of the forum were before 2012 when more posts were published monthly comparing to nowdays. Users posted their messages using their names mostly, not anonymously. The next spike is 2020 Mar-May COVID-19 lockdown. Seasonality is clear seen in the data when less posts are published in summer time.
     - Less posts on weekends, even on Friday.
     - Most posts are published day time from offices or when kids are in school. Early morning and night messages are from users in US and Canada or somebody who do not sleep.
 
 4. Authors (forum users). Anonymous users are not taken into account in this research.
- - 0. Authors.ipynb - the listof frum users is created based on the downloaded posts. The code extracts author IDs, last used nick names (can be changed overtime or in different posts), numbers of posts published, the date of the first and last posts, number of discussions started, number or replies to their posts, and many other attributes aggregated in different ways from text extended attributes, sentiment analysis, time trends. A quick EDA is done in teh process attributes extractions
- - 1. Authors Segmentation by Style.ipynb is EDA and authors clusterization. The result of the code are attributes most important to distinguish users (total number ofusers  posts was not taken into account):
+ - 0.Authors.ipynb - the listof frum users is created based on the downloaded posts. The code extracts author IDs, last used nick names (can be changed overtime or in different posts), numbers of posts published, the date of the first and last posts, number of discussions started, number or replies to their posts, and many other attributes aggregated in different ways from text extended attributes, sentiment analysis, time trends. A quick EDA is done in teh process attributes extractions
+ - 1.Authors Segmentation by Style.ipynb is EDA and authors clusterization. The result of the code are attributes most important to distinguish users (total number ofusers  posts was not taken into account):
     - Number of posts with commas (fraction_of_medium_with_commas)
     - Average number of sentences (avg_num_sent)
     - Number of large topics were created by user (topics with number of posts more then average in a forum chapter) (fraction_of_Large_Topics)
@@ -56,21 +56,25 @@ Basically, the complexity of text (size, commas, adjectives), interest for the p
 4 clusters were separated.
 
 5. Posts similarity and clones detection. Hugging Face Transformers models available for Russian language were tested in this research.
-  - 5. Philologist. It's an anonymous user but with very specific style. Her texts are long, paragraphs are double separated and she writes for very specific subjects only. This is an ideal candidate for text similarity study because I can not create a train/test subsets but can select all long texts with double separation between paragraphs for analysis. A few posts which are definetly were made by Philologist (she names herself in few posts in this way but did not open her registered user anywhere to easily combine posts.) The selected posts were used as a sample to find other similar posts. A manual review shows the similarity process was wrong in just few posts. However, the more posts are found, the harder to review and exclude other authors. Still, I was able to identify hundreds of posts teh same anonymous author.
-  - 6. lizon. This lady created numerous clones but she is easy identified by the style and subjects. She likes to add photes and links to photos in her posts. No a surprise, the model trained on the original, not cleaned from html tags, posts is much better then models built on just pure text. "blinoff/roberta-base-russian-v0" pre-trained model has the best score. In general, the process is strightforward but 2 steps need more attention:
+  - 5.Philologist. It's an anonymous user but with very specific style. Her texts are long, paragraphs are double separated and she writes for very specific subjects only. This is an ideal candidate for text similarity study because I can not create a train/test subsets but can select all long texts with double separation between paragraphs for analysis. A few posts which are definetly were made by Philologist (she names herself in few posts in this way but did not open her registered user anywhere to easily combine posts.) The selected posts were used as a sample to find other similar posts. A manual review shows the similarity process was wrong in just few posts. However, the more posts are found, the harder to review and exclude other authors. Still, I was able to identify hundreds of posts teh same anonymous author.
+  - 6.lizon. This lady created numerous clones but she is easy identified by the style and subjects. She likes to add photes and links to photos in her posts. No a surprise, the model trained on the original, not cleaned from html tags, posts is much better then models built on just pure text. "blinoff/roberta-base-russian-v0" pre-trained model has the best score. In general, the process is strightforward but 2 steps need more attention:
     - How to build traing/test dataset for s specific user? Using all available downloaded data (9M of posts) makes the data so unbalanced and large, it is not possible to use in practise. But, in fact, there are even more available data not downloaded. I choose one first, user, and posts from all topics where she participated, for training and test. The dataset is still unbalanced but more reasonable and processable in Google Colab GPU instance. All users and discussions after the last known post of teh pre-selected user are data for prediction, e.g. dataset to find clones in.
     -  There is still non 0, but low number of users similar by style and subjects to the selected author. They are appeared in the predicted results. the question is how to limit the number of found clones to the real one. It was easy for lizon, but not for Fedulya user.
-    -  0.lizon_Data_Preparation.ipynb creates train/test dataset
-    -  1.lizon_finetuning_experiments.ipynb researches different models and ways to train using ktrain library
-    -  3.lizon_transformers_final.ipynb creates a final model or rather a set of several models trained on different folds.
-    -  4.lizon_prediction.ipynb predicts clones based on the rest of the downloaded data.
+
+Related Notebooks:
+   - 0.lizon_Data_Preparation.ipynb creates train/test dataset
+   - 1.lizon_finetuning_experiments.ipynb researches different models and ways to train using ktrain library
+   - 3.lizon_transformers_final.ipynb creates a final model or rather a set of several models trained on different folds.
+   - 4.lizon_prediction.ipynb predicts clones based on the rest of the downloaded data.
+       
+Even more interesting research, if a new model can distinguish between clones the first model found?
+Related Notebooks: 
+   - 5.lizon_dissimilarity_model.ipynb
+   - 6.lizon_dissimilarity_2LargestAccounts_model.ipynb
+   - 7.lizon_dissimilarity_3MediumAccounts_model.ipynb
     
- Even more interesting research, if a new model can distinguish between clones the first model found?
-     - 5.lizon_dissimilarity_model.ipynb
-     - 6.lizon_dissimilarity_2LargestAccounts_model.ipynb
-     - 7.lizon_dissimilarity_3MediumAccounts_model.ipynb
    The more messages from a particular clone the better difference detected. 500 - 1000 posts to detect a difference.
   
-  - 7. Fedulya Surprisingly but the original, not cleaned from html tags posts are more informative for a classification model even without a lot of links and photos as in a case of lizon. The difference between models is not so large but still significant. This user has even more clones. Without similar user names it was difficult to say if it's teh same person or different because the number of similar posts are low.
+  - 7.Fedulya Surprisingly but the original, not cleaned from html tags posts are more informative for a classification model even without a lot of links and photos as in a case of lizon. The difference between models is not so large but still significant. This user has even more clones. Without similar user names it was difficult to say if it's teh same person or different because the number of similar posts are low.
 
 8. Topic Modeling Top2vec works perfectly fine to extract topics discussed and understand What Russian women talking about. 
