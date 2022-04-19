@@ -78,3 +78,4 @@ Related Notebooks:
   - 7.Fedulya Surprisingly but the original, not cleaned from html tags posts are more informative for a classification model even without a lot of links and photos as in a case of lizon. The difference between models is not so large but still significant. This user has even more clones. Without similar user names it was difficult to say if it's teh same person or different because the number of similar posts are low.
 
 8. Topic Modeling Top2vec works perfectly fine to extract topics discussed and understand What Russian women talking about. 
+9. Headlines -  a transformer model to create topic headlines from forum posts based on the idea of abstractive sumarization.
